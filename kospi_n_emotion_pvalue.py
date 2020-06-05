@@ -20,7 +20,7 @@ def date_range(first_year, first_month, last_year, last_month):
             Flag = False
     return date_list
 
-date_list = date_range('2013', '02', '2017', '05')
+date_list = date_range('2008', '02', '2013', '02')
 #print(date_list)
 
 
@@ -41,75 +41,92 @@ def read_csv_return_frame_index(csv_name):
             else:
                 pass
     return frame, index
-frame, index = read_csv_return_frame_index('kospi_n_donga.csv')
-df = pd.DataFrame(frame, index=index, columns=['kospi', 'emotion'])
-corr = stats.spearmanr(df.kospi, df.emotion)
-print('donga')
-print(corr)
+try:
+    frame, index = read_csv_return_frame_index('kospi_n_donga.csv')
+    df = pd.DataFrame(frame, index=index, columns=['kospi', 'emotion'])
+    corr = stats.pearsonr(df.kospi, df.emotion)
+    print('donga')
+    print(corr)
+except Exception:
+    pass
+try:
+    frame, index = read_csv_return_frame_index('kospi_n_hangyeong.csv')
+    df = pd.DataFrame(frame, index=index, columns=['kospi', 'emotion'])
+    corr = stats.pearsonr(df.kospi, df.emotion)
+    print('hangyeong')
+    print(corr)
+except Exception:
+    pass
+
+try:
+    frame, index = read_csv_return_frame_index('kospi_n_hangyeorea.csv')
+    df = pd.DataFrame(frame, index=index, columns=['kospi', 'emotion'])
+    corr = stats.pearsonr(df.kospi, df.emotion)
+    print('hangyeorea')
+    print(corr)
+except Exception:
+    pass
+
 """
-
-frame, index = read_csv_return_frame_index('kospi_n_hangyeong.csv')
-df = pd.DataFrame(frame, index=index, columns=['kospi', 'emotion'])
-corr = stats.spearmanr(df.kospi, df.emotion)
-print('hangyeong')
-print(corr)
-
-frame, index = read_csv_return_frame_index('kospi_n_hangyeorea.csv')
-df = pd.DataFrame(frame, index=index, columns=['kospi', 'emotion'])
-corr = stats.spearmanr(df.kospi, df.emotion)
-print('hangyeorea')
-print(corr)
-
 frame, index = read_csv_return_frame_index('kospi_n_hankook.csv')
 df = pd.DataFrame(frame, index=index, columns=['kospi', 'emotion'])
-corr = stats.spearmanr(df.kospi, df.emotion)
+corr = stats.pearsonr(df.kospi, df.emotion)
 print('hankook')
 print(corr)
-
-frame, index = read_csv_return_frame_index('kospi_n_josun.csv')
-df = pd.DataFrame(frame, index=index, columns=['kospi', 'emotion'])
-corr = stats.spearmanr(df.kospi, df.emotion)
-print('josun')
-print(corr)
+"""
+try:
+    frame, index = read_csv_return_frame_index('kospi_n_josun.csv')
+    df = pd.DataFrame(frame, index=index, columns=['kospi', 'emotion'])
+    corr = stats.pearsonr(df.kospi, df.emotion)
+    print('josun')
+    print(corr)
+except Exception:
+    pass
+"""
 frame, index = read_csv_return_frame_index('kospi_n_jungang.csv')
 df = pd.DataFrame(frame, index=index, columns=['kospi', 'emotion'])
-corr = stats.spearmanr(df.kospi, df.emotion)
+corr = stats.pearsonr(df.kospi, df.emotion)
 print('jungang')
 print(corr)
-
 frame, index = read_csv_return_frame_index('kospi_n_kookmin.csv')
 df = pd.DataFrame(frame, index=index, columns=['kospi', 'emotion'])
-corr = stats.spearmanr(df.kospi, df.emotion)
+corr = stats.pearsonr(df.kospi, df.emotion)
 print('kookmin')
 print(corr)
+"""
+try:
+    frame, index = read_csv_return_frame_index('kospi_n_kyenghyang.csv')
+    df = pd.DataFrame(frame, index=index, columns=['kospi', 'emotion'])
+    corr = stats.pearsonr(df.kospi, df.emotion)
+    print('kyeonghyang')
+    print(corr)
+except Exception:
+    pass
 
-frame, index = read_csv_return_frame_index('kospi_n_kyenghyang.csv')
-df = pd.DataFrame(frame, index=index, columns=['kospi', 'emotion'])
-corr = stats.spearmanr(df.kospi, df.emotion)
-print('kyeonghyang')
-print(corr)
-
-frame, index = read_csv_return_frame_index('kospi_n_meagyeong.csv')
-df = pd.DataFrame(frame, index=index, columns=['kospi', 'emotion'])
-corr = stats.spearmanr(df.kospi, df.emotion)
-print('myeagyeong')
-print(corr)
-
+try:
+    frame, index = read_csv_return_frame_index('kospi_n_meagyeong.csv')
+    df = pd.DataFrame(frame, index=index, columns=['kospi', 'emotion'])
+    corr = stats.pearsonr(df.kospi, df.emotion)
+    print('myeagyeong')
+    print(corr)
+except Exception:
+    pass
+"""
 frame, index = read_csv_return_frame_index('kospi_n_moonhwa.csv')
 df = pd.DataFrame(frame, index=index, columns=['kospi', 'emotion'])
-corr = stats.spearmanr(df.kospi, df.emotion)
+corr = stats.pearsonr(df.kospi, df.emotion)
 print('moonhwa')
 print(corr)
 
 frame, index = read_csv_return_frame_index('kospi_n_seagyea.csv')
 df = pd.DataFrame(frame, index=index, columns=['kospi', 'emotion'])
-corr = stats.spearmanr(df.kospi, df.emotion)
+corr = stats.pearsonr(df.kospi, df.emotion)
 print('seagyea')
 print(corr)
 
 frame, index = read_csv_return_frame_index('kospi_n_seoul.csv')
 df = pd.DataFrame(frame, index=index, columns=['kospi', 'emotion'])
-corr = stats.spearmanr(df.kospi, df.emotion)
+corr = stats.pearsonr(df.kospi, df.emotion)
 print('seoul')
 print(corr)
 """
