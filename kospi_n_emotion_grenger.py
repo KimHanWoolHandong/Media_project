@@ -18,7 +18,7 @@ def date_range(first_year, first_month, last_year, last_month):
             Flag = False
     return date_list
 
-date_list = date_range('2017', '05', '2020', '01')
+date_list = date_range('2003', '02', '2008', '02')
 
 
 
@@ -40,7 +40,7 @@ def read_csv_return_frame_index(csv_name):
     return frame, index
 
 
-frame, index = read_csv_return_frame_index('kospi_n_seoul.csv')
+frame, index = read_csv_return_frame_index('kospi_n_josun.csv')
 df = pd.DataFrame(frame, index=index, columns=['kospi', 'emotion'])
 corr = df.corr(method='spearman')
 df.plot.line()

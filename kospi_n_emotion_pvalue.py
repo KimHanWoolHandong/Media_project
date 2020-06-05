@@ -20,7 +20,7 @@ def date_range(first_year, first_month, last_year, last_month):
             Flag = False
     return date_list
 
-date_list = date_range('2017', '05', '2020', '01')
+date_list = date_range('2013', '02', '2017', '05')
 #print(date_list)
 
 
@@ -41,12 +41,12 @@ def read_csv_return_frame_index(csv_name):
             else:
                 pass
     return frame, index
-"""
 frame, index = read_csv_return_frame_index('kospi_n_donga.csv')
 df = pd.DataFrame(frame, index=index, columns=['kospi', 'emotion'])
 corr = stats.spearmanr(df.kospi, df.emotion)
 print('donga')
 print(corr)
+"""
 
 frame, index = read_csv_return_frame_index('kospi_n_hangyeong.csv')
 df = pd.DataFrame(frame, index=index, columns=['kospi', 'emotion'])
@@ -65,13 +65,12 @@ df = pd.DataFrame(frame, index=index, columns=['kospi', 'emotion'])
 corr = stats.spearmanr(df.kospi, df.emotion)
 print('hankook')
 print(corr)
-"""
+
 frame, index = read_csv_return_frame_index('kospi_n_josun.csv')
 df = pd.DataFrame(frame, index=index, columns=['kospi', 'emotion'])
 corr = stats.spearmanr(df.kospi, df.emotion)
 print('josun')
 print(corr)
-"""
 frame, index = read_csv_return_frame_index('kospi_n_jungang.csv')
 df = pd.DataFrame(frame, index=index, columns=['kospi', 'emotion'])
 corr = stats.spearmanr(df.kospi, df.emotion)

@@ -9,16 +9,10 @@ content = "내가 지금 무엇을 하고 있을까?"
 content_morphs = komoran.pos(content)
 print(content_morphs)
 """
-news_lst = ['조선일보']
-exception_list = [[('[', 'SS'), ('경제', 'NNG'), ('계', 'XSN'), ('인사', 'NNG'), (']', 'SS')],
-                  [('[', 'SS'), ('통', 'NNG'), ('판', 'NNP'), ('광고', 'NNP'), (']', 'SS')]]
-excepiton_list2 = [[('[', 'SS'), ('주식', 'NNP'), ('시세표', 'NNG'), (']', 'SS')],
-                   [('[', 'SS'), ('그래픽', 'NNP'), ('뉴스', 'NNP'), (']', 'SS')],
-                    [('[', 'SS'), ('발견', 'NNP'), ('!', 'SF'), ('이', 'MM'), ('채널', 'NNP'), (']', 'SS')],
-                    [('[', 'SS'), ('경제', 'NNG'), ('계', 'XSN'), ('인사', 'NNG'), (']', 'SS')],
-                    [('[', 'SS'), ('주식', 'NNP'), ('시세표', 'NNG'), (']', 'SS')]
-]
-
+news_lst = ['경향신문', '국민일보', '동아일보', '문화일보', '서울신문', '세계일보', '조선일보', '중앙일보',
+            '한겨레', '한국일보', '매일경제', '한국경제']
+month_to_quater = {'01':'1', '02':'1', '03':'1', '04':'2', '05':'2', '06':'2', '07':'3', '08':'3', '09':'3',
+                   '10':'4', '11':'4', '12':'4'}
 def calculate_csv(csv_locate, pos_dic, neg_dic, komoran):
     news = {}
     count = {}
@@ -27,32 +21,26 @@ def calculate_csv(csv_locate, pos_dic, neg_dic, komoran):
         next(rd)
         i = 0
         for line in rd:
-            ######실험용
-            #if i == 1000:
-            #    break
-            ###########
-            #print(line)
-            if len(line) == 0:
+            if len(line) <= 1:
                 pass
             elif line[1] not in news_lst:
                 pass
             else:
-                news_n_date = line[1]+"/"+line[0][:-2]
+                news_year = line[0][:-4]
+                news_month = line[0][4:6]
+                date = news_year+month_to_quater[news_month]
+                #print(date)
+                news_n_date = line[1]+"/"+date
                 morphs = komoran.pos(line[2])
-                if (morphs[:5] in exception_list) or (morphs in excepiton_list2) or\
-                        (morphs[:4] == [('[', 'SS'), ('그래픽', 'NNP'), ('뉴스', 'NNP'), (']', 'SS')]):
-                    #print(morphs)
-                    pass
+                score = cal_pos_neg(morphs, pos_dic, neg_dic)
+                if news_n_date in news.keys():
+                    news[news_n_date] = score + news[news_n_date]
+                    #print(line[1] + " " + str(score))
+                    count[news_n_date] = 1 + count[news_n_date]
                 else:
-                    score = cal_pos_neg(morphs, pos_dic, neg_dic)
-                    if news_n_date in news.keys():
-                        news[news_n_date] = score + news[news_n_date]
-                        #print(line[1] + " " + str(score))
-                        count[news_n_date] = 1 + count[news_n_date]
-                    else:
-                        news[news_n_date] = score
-                        count[news_n_date] = 1
-            print(line[0])
+                    news[news_n_date] = score
+                    count[news_n_date] = 1
+            #print(line[0])
             i += 1
     #print(news)
     #print(count)
@@ -63,7 +51,7 @@ def calculate_csv(csv_locate, pos_dic, neg_dic, komoran):
         else:
             average[name] = news[name] / count[name]
     #print(average)
-
+    print(news)
     return news, count, average
 
 def dictionary_creating():
@@ -117,7 +105,6 @@ def cal_pos_neg(content, pos_dic, neg_dic):
     length = len(content)
     neg_count = 0
     pos_count = 0
-    #(content)
     for i in range(length):
         if length-i >= 3:
             three_word = (content[i], content[i+1], content[i+2])
@@ -164,7 +151,7 @@ def cal_pos_neg(content, pos_dic, neg_dic):
     return score
 
 def write_csv(president, news, count, average):
-    xl = openpyxl.load_workbook('result.xlsx')
+    xl = openpyxl.load_workbook('./quater_result.xlsx')
     sheet = xl.get_sheet_by_name(president)
     i = 1
     for key, data in news.items():
@@ -178,7 +165,7 @@ def write_csv(president, news, count, average):
         sheet.cell(row=i, column=4).value = count[key]
         sheet.cell(row=i, column=5).value = average[key]
         i += 1
-    xl.save("result.xlsx")
+    xl.save("./quater_result.xlsx")
     xl.close()
 
 
@@ -186,8 +173,11 @@ def write_csv(president, news, count, average):
 
 
 def calculation_collection(pos_dic, neg_dic, komoran):
-    NTW_news, NTW_count, NTW_average = calculate_csv('./josun.csv', pos_dic, neg_dic, komoran)
-    write_csv('josun', NTW_news, NTW_count, NTW_average)
+    donga_news, donga_count, donga_average = calculate_csv('./donga.csv', pos_dic, neg_dic, komoran)
+    josun_news, josun_count, josun_average = calculate_csv('./josun.csv', pos_dic, neg_dic, komoran)
+
+    write_csv('Donga', donga_news, donga_count, donga_average)
+    write_csv('Josun', josun_news, josun_count, josun_average)
 
 
 komoran = Komoran()

@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 with open("example.html") as fp:
     soup = BeautifulSoup(fp, 'html.parser')
 
-datetime_obj = datetime.strptime('2003-02-23', '%Y-%m-%d')
+datetime_obj = datetime.strptime('2000-01-01', '%Y-%m-%d')
 before_link = 'http://srchdb1.chosun.com/pdf/i_service/index_new.jsp?'
 
 data = []

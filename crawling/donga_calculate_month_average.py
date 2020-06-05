@@ -1,23 +1,7 @@
 from konlpy.tag import Komoran
 import csv, codecs
 import openpyxl
-
-
-"""
-komoran = Komoran()
-content = "내가 지금 무엇을 하고 있을까?"
-content_morphs = komoran.pos(content)
-print(content_morphs)
-"""
-news_lst = ['조선일보']
-exception_list = [[('[', 'SS'), ('경제', 'NNG'), ('계', 'XSN'), ('인사', 'NNG'), (']', 'SS')],
-                  [('[', 'SS'), ('통', 'NNG'), ('판', 'NNP'), ('광고', 'NNP'), (']', 'SS')]]
-excepiton_list2 = [[('[', 'SS'), ('주식', 'NNP'), ('시세표', 'NNG'), (']', 'SS')],
-                   [('[', 'SS'), ('그래픽', 'NNP'), ('뉴스', 'NNP'), (']', 'SS')],
-                    [('[', 'SS'), ('발견', 'NNP'), ('!', 'SF'), ('이', 'MM'), ('채널', 'NNP'), (']', 'SS')],
-                    [('[', 'SS'), ('경제', 'NNG'), ('계', 'XSN'), ('인사', 'NNG'), (']', 'SS')],
-                    [('[', 'SS'), ('주식', 'NNP'), ('시세표', 'NNG'), (']', 'SS')]
-]
+news_lst = ['동아일보']
 
 def calculate_csv(csv_locate, pos_dic, neg_dic, komoran):
     news = {}
@@ -27,11 +11,6 @@ def calculate_csv(csv_locate, pos_dic, neg_dic, komoran):
         next(rd)
         i = 0
         for line in rd:
-            ######실험용
-            #if i == 1000:
-            #    break
-            ###########
-            #print(line)
             if len(line) == 0:
                 pass
             elif line[1] not in news_lst:
@@ -39,19 +18,14 @@ def calculate_csv(csv_locate, pos_dic, neg_dic, komoran):
             else:
                 news_n_date = line[1]+"/"+line[0][:-2]
                 morphs = komoran.pos(line[2])
-                if (morphs[:5] in exception_list) or (morphs in excepiton_list2) or\
-                        (morphs[:4] == [('[', 'SS'), ('그래픽', 'NNP'), ('뉴스', 'NNP'), (']', 'SS')]):
-                    #print(morphs)
-                    pass
+                score = cal_pos_neg(morphs, pos_dic, neg_dic)
+                if news_n_date in news.keys():
+                    news[news_n_date] = score + news[news_n_date]
+                    #print(line[1] + " " + str(score))
+                    count[news_n_date] = 1 + count[news_n_date]
                 else:
-                    score = cal_pos_neg(morphs, pos_dic, neg_dic)
-                    if news_n_date in news.keys():
-                        news[news_n_date] = score + news[news_n_date]
-                        #print(line[1] + " " + str(score))
-                        count[news_n_date] = 1 + count[news_n_date]
-                    else:
-                        news[news_n_date] = score
-                        count[news_n_date] = 1
+                    news[news_n_date] = score
+                    count[news_n_date] = 1
             print(line[0])
             i += 1
     #print(news)
@@ -186,8 +160,8 @@ def write_csv(president, news, count, average):
 
 
 def calculation_collection(pos_dic, neg_dic, komoran):
-    NTW_news, NTW_count, NTW_average = calculate_csv('./josun.csv', pos_dic, neg_dic, komoran)
-    write_csv('josun', NTW_news, NTW_count, NTW_average)
+    NTW_news, NTW_count, NTW_average = calculate_csv('./donga.csv', pos_dic, neg_dic, komoran)
+    write_csv('donga', NTW_news, NTW_count, NTW_average)
 
 
 komoran = Komoran()
